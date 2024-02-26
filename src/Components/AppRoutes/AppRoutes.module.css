@@ -1,20 +1,9 @@
-.router{ 
-	box-sizing: border-box;
-	width: 100%;
-	height: 100%;
-}
-
-
-.router_header {
-	box-sizing: border-box;
-	height: 10%;
-}
-.router_body {
-	box-sizing: border-box;
-	height: 80%;
-}
-.router_footer {
-	box-sizing: border-box;
-	height: 10%;
-	
+.routes {
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 80vh;
+	background-color: gray;
+	border: 1px solid transparent;
+	display: flex;	
 }
