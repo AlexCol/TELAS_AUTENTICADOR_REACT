@@ -17,11 +17,13 @@ function UserActivation() {
 	const dispatch = useDispatch<AppDispatch>();
 	const {success, loading, error} = useSelector<RootState, IAuthSate>(state => state.auth);
 	
-	
-	useEffect(() => {
-		dispatch(activate(token || '_'));
-		dispatch(reset());
-	}, []);
+	useEffect(() => {		
+		async function ativateUser() {
+			await dispatch(activate(token || '_'));	
+			dispatch(reset());
+		}
+		ativateUser();
+	}, [dispatch, token]);
 
 	useEffect(() => {
 		if(success) {
@@ -48,8 +50,8 @@ function UserActivation() {
 			)}
 			{error.length > 0 && 
 							<>
-							<h5>Já ativou seu usuário mas não lembra a senha? <Link to='/auth/password_recover_send'>Clique aqui.</Link></h5>							
-							<h5>Gostaria de solicitar um novo email de ativação?  <Link to='/user/activation_resend'>Clique aqui.</Link></h5>
+							<h5>Já ativou seu usuário mas não lembra a senha? <Link to={`/auth/password_recover_send?o=${origin}`}>Clique aqui.</Link></h5>							
+							<h5>Gostaria de solicitar um novo email de ativação?  <Link to={`/user/activation_resend?o=${origin}`}>Clique aqui.</Link></h5>
 							</>
 			}
 		</div>

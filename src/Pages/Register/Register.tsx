@@ -62,6 +62,7 @@ function Register() {
 					id='email'
 					autoComplete='email'
 					type='text'
+					required
 					disabled={loading}
 					placeholder='Informe seu email.'
 					ref={emailRef}
@@ -70,6 +71,7 @@ function Register() {
 					id='firstname'
 					autoComplete='given-name'
 					type='text'
+					required
 					disabled={loading}
 					placeholder='Nome.'
 					ref={firstNameRef}
@@ -78,6 +80,7 @@ function Register() {
 					id='lastname'
 					autoComplete='family-name'
 					type='text'
+					required
 					disabled={loading}
 					placeholder='Sobrenome.'
 					ref={lastNameRef}
@@ -86,6 +89,7 @@ function Register() {
 					id='password'
 					type='password'
 					disabled={loading}
+					required
 					autoComplete='new-password'
 					placeholder='Senha.'
 					ref={passwordRef}
@@ -94,6 +98,7 @@ function Register() {
 					id='confirmpassword'
 					type='password'
 					disabled={loading}
+					required
 					autoComplete='new-password'
 					placeholder='Confirme sua senha.'
 					ref={confirmPasswordRef}

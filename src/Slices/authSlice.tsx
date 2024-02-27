@@ -38,6 +38,29 @@ export const activate = createAsyncThunk(
   }
 );
 
+export const resendActivation = createAsyncThunk(
+  "auth/resendActivation",
+  async ({email, origin}: {email: string, origin: string}, thunkAPI) => {
+    const data = await authService.resendActivation(email, origin);
+		
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}
+    return data;
+  }
+);
+
+export const sendPasswordRecover = createAsyncThunk(
+  "auth/sendPasswordRecover",
+  async ({email, origin}: {email: string, origin: string}, thunkAPI) => {
+    const data = await authService.sendPasswordRecover(email, origin);
+		
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}
+    return data;
+  }
+);
 
 
 //!slicer
@@ -70,6 +93,40 @@ export const authSlice = createSlice({
 				state.success = false;
 				state.authUser = null;
 			})
+			.addCase(resendActivation.pending, (state) => {
+				state.loading = true;
+				state.error = [];
+				state.success = false;
+			})
+			.addCase(resendActivation.fulfilled, (state) => {
+				state.loading = false;
+				state.error = [];
+				state.success = true;
+				state.authUser = null;
+			})
+			.addCase(resendActivation.rejected, (state, action) => {
+				state.loading = false;
+				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+				state.success = false;
+				state.authUser = null;
+			})
+			.addCase(sendPasswordRecover.pending, (state) => {
+				state.loading = true;
+				state.error = [];
+				state.success = false;
+			})
+			.addCase(sendPasswordRecover.fulfilled, (state) => {
+				state.loading = false;
+				state.error = [];
+				state.success = true;
+				state.authUser = null;
+			})
+			.addCase(sendPasswordRecover.rejected, (state, action) => {
+				state.loading = false;
+				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+				state.success = false;
+				state.authUser = null;
+			})	
 	}
 });
 
