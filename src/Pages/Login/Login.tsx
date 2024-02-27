@@ -2,7 +2,9 @@ import styles from './Login.module.css';
 
 function Login() {
 	return (
-		<div>Login</div>
+		<div className={styles.login}>
+			<h1>Login</h1>
+		</div>
 	)
 }
 export default Login

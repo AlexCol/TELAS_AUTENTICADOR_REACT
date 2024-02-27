@@ -1,7 +1,7 @@
 import AppRoutes from './Components/AppRoutes/AppRoutes'
 
 function App() {
-  return (
+	return (
     <>
 			<AppRoutes />
     </>

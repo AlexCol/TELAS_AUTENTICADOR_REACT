@@ -1,11 +1,13 @@
 import styles from './AppNavbar.module.css';
-import { Link, NavLink } from 'react-router-dom';
 import { RiHomeGearLine } from 'react-icons/ri';
-import { GiArchiveRegister } from 'react-icons/gi';
-import { useMouseCenterEvent } from '../Hooks/useMouseCenterEvent';
+import { GiArchiveRegister, GiDoor } from 'react-icons/gi';
+import { Link, NavLink } from 'react-router-dom';
+import { useMouseCenterEvent } from '../../Hooks/useMouseCenterEvent';
+
 
 function AppNavbar() {
 	const isRight = useMouseCenterEvent();
+	const auth = false;
 	
 	return (
 		<nav className={styles.navbar}>
@@ -17,16 +19,26 @@ function AppNavbar() {
 			
 			<ul className={styles.nav_links}>
 				{/*quando tiver validação de autenticação, esses caminhos devem ficar ocultos se não autenticado*/}
-				<li>
-					<NavLink to="/profile"><RiHomeGearLine /></NavLink>
-				</li>
-				<li>
-					<NavLink to="/register"><GiArchiveRegister /></NavLink>
-				</li>
-				<li>
-					<span>Sair</span>
-				</li>	
-				{/*quando tiver validação de autenticação, esses caminhos devem ficar ocultos se não autenticado*/}
+				
+				{auth ? (
+					<>
+						<li>
+							<NavLink to="/"><RiHomeGearLine /></NavLink>
+						</li>
+						<li>
+							<span>Sair</span>
+						</li>
+					</>
+				) : (				
+					<>
+						<li>
+							<NavLink to="/register"><GiArchiveRegister /></NavLink>
+						</li>
+						<li>
+							<NavLink to="/login"><GiDoor /></NavLink>
+						</li>						
+					</>
+				)}
 			</ul>
 		</nav>
 

@@ -8,6 +8,12 @@ body {
 
 a {
   text-decoration: none;
+	color: green;
+	font-weight: bold;
+	transition: 0.5s;
+}
+a:hover {
+	color: darkgreen;
 }
 
 ul {
@@ -24,7 +30,7 @@ label {
 label span {
   font-weight: bold;
   margin-bottom: 0.5em;
-  color: blueviolet;
+  color: green;
   font-size: 0.7em;
 }
 
@@ -39,11 +45,11 @@ input {
   margin-bottom: 0.6em;
 }
 input::placeholder {
-  color: blueviolet;
+  color: green;
 }
 input:disabled {
   cursor: not-allowed;
-	color: blueviolet;
+	color: green;
   background-color: white;
 }
 input:disabled::placeholder {
@@ -64,8 +70,8 @@ input:disabled::placeholder {
 button,
 input[type="submit"] {
   background-color: white;
-  color: blueviolet;
-  border: 1px solid blueviolet;
+  color: darkgreen;
+  border: 1px solid darkgreen;
   border-radius: 4px;
   padding: 10px 8px;
   font-weight: bold;
@@ -77,7 +83,7 @@ input[type="submit"] {
 .btn:hover,
 button:hover,
 input[type="submit"]:hover{
-  background-color: blueviolet;
+  background-color: darkgreen;
   color: white;
 	opacity: 1;
   border: 1px solid white;
@@ -87,15 +93,15 @@ input[type="submit"] {
 }
 input[type="submit"]:disabled {
   background-color: black;
-  color: blueviolet;
-  border: 1px solid blueviolet;
+  color: darkgreen;
+  border: 1px solid green;
   cursor: not-allowed;
 	opacity: 1;
 }
 input[type="submit"]:disabled:hover {
 	background-color: black;
-  color: blueviolet;
-  border: 1px solid blueviolet;
+  color: darkgreen;
+  border: 1px solid darkgreen;
   cursor: not-allowed;
 	opacity: 1;
 }

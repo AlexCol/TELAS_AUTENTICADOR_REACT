@@ -2,7 +2,9 @@ import styles from './PasswordRecover.module.css';
 
 function PasswordRecover() {
 	return (
-		<div>PasswordRecover</div>
+		<div>
+			<h3>Recover</h3>
+		</div>
 	)
 }
 export default PasswordRecover

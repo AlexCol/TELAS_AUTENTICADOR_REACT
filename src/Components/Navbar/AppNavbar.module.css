@@ -34,7 +34,12 @@
 }
 .nav_links span {
   cursor: pointer;
+	transition: 0.5s;
 }
+.nav_links span:hover {
+  color: green;
+}
+
 .nav_links svg {
   font-size: 1.5em;
 }
