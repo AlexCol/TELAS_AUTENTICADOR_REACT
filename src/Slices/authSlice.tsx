@@ -1,30 +1,54 @@
 import Cookies from 'js-cookie';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { authCookieName } from "../API/config";
 import { IAuthData } from "../Interfaces/IAuthData";
 import { authService } from "../Services/authService";
+import { encrypt } from '../Utils/Crypto';
 
 
 //!declarando interface do state
 export interface IAuthSate {
-	authUser: IAuthData|null,
+	authTokens: IAuthData|null,
 	error: []
 	success: boolean,
 	loading: boolean	
 };
 
 //! buscando dados dos cookies, pra ver se já não tem cadastro
-const cookieValue = Cookies.get(authCookieName);
-const loggedData:IAuthData = cookieValue ? JSON.parse(cookieValue) : null;
+function getLoggedInfo(): IAuthData|null {
+	const access = Cookies.get("accessToken");
+	const refresh = Cookies.get("refreshToken");
+	if (access && refresh) {
+		const data: IAuthData = {accessToken: access, refreshToken: refresh};
+		return data;
+	}
+	return null;
+}
+
 
 //! inicializando state inicial
 const initialState: IAuthSate = {
-	authUser: loggedData,
+	authTokens: getLoggedInfo(),
 	error: [],
 	success: false,
-	loading: false	
+	loading: false
 }
 
+
+export const login = createAsyncThunk(
+  "auth/login",
+  async ({email, password}: {email: string, password: string}, thunkAPI) => {
+    const encryptedData = encrypt({email, password});
+		const data = await authService.login(encryptedData);
+
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}		
+		Cookies.set('accessToken', data.accessToken, {sameSite: 'Strict', secure: true});
+		Cookies.set('refreshToken', data.refreshToken, {sameSite: 'Strict', secure: true});
+
+    return data;
+  }
+);
 
 export const activate = createAsyncThunk(
   "auth/activate",
@@ -76,6 +100,23 @@ export const authSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
+		.addCase(login.pending, (state) => {
+			state.loading = true;
+			state.error = [];
+			state.success = false;
+		})
+		.addCase(login.fulfilled, (state) => {
+			state.loading = false;
+			state.error = [];
+			state.success = true;
+			state.authTokens = getLoggedInfo();
+		})
+		.addCase(login.rejected, (state, action) => {
+			state.loading = false;
+			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+			state.success = false;
+			state.authTokens = null;
+		})			
 			.addCase(activate.pending, (state) => {
 				state.loading = true;
 				state.error = [];
@@ -85,13 +126,13 @@ export const authSlice = createSlice({
 				state.loading = false;
 				state.error = [];
 				state.success = true;
-				state.authUser = null;
+				state.authTokens = null;
 			})
 			.addCase(activate.rejected, (state, action) => {
 				state.loading = false;
 				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
 				state.success = false;
-				state.authUser = null;
+				state.authTokens = null;
 			})
 			.addCase(resendActivation.pending, (state) => {
 				state.loading = true;
@@ -102,13 +143,13 @@ export const authSlice = createSlice({
 				state.loading = false;
 				state.error = [];
 				state.success = true;
-				state.authUser = null;
+				state.authTokens = null;
 			})
 			.addCase(resendActivation.rejected, (state, action) => {
 				state.loading = false;
 				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
 				state.success = false;
-				state.authUser = null;
+				state.authTokens = null;
 			})
 			.addCase(sendPasswordRecover.pending, (state) => {
 				state.loading = true;
@@ -119,13 +160,13 @@ export const authSlice = createSlice({
 				state.loading = false;
 				state.error = [];
 				state.success = true;
-				state.authUser = null;
+				state.authTokens = null;
 			})
 			.addCase(sendPasswordRecover.rejected, (state, action) => {
 				state.loading = false;
 				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
 				state.success = false;
-				state.authUser = null;
+				state.authTokens = null;
 			})	
 	}
 });

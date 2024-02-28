@@ -57,7 +57,7 @@ function PasswordRecoverSend() {
 				{error && error.map((errorMessage, index) => (
 					<Message key={index} msg={errorMessage} type='error'/>
 				))}
-				{success && <Message msg={'Email enviado com sucesso.'} type='success'/>}
+				{success && <Message msg={'Email de recuperação enviado com sucesso.'} type='success'/>}
 			</div>
 		</div>
 	)

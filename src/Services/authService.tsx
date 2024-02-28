@@ -1,12 +1,7 @@
 import { apiRequests } from "../API/config";
 
-interface ILoginData {
-	Email: string,
-	Password: string
-}
-
-const login = async (data:ILoginData) => {
-	return apiRequests('post', `/auth/signin`, data);
+const login = async (data: string) => {
+	return apiRequests('post', `/auth/signin`, {data});
 };
 
 const activate = async (token:string) => {
