@@ -23,7 +23,7 @@ function Register() {
 	const dispatch = useDispatch<AppDispatch>();
 
 	
-	function handleSumit(e: FormEvent<HTMLFormElement>) {
+	async function handleSumit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 		setPageError('');
 
@@ -35,7 +35,7 @@ function Register() {
 			ConfirmPassword: confirmPasswordRef.current.value
 		}
 
-		dispatch(register({registerData, origin: origin||'self'}));
+		dispatch(await register({registerData, origin: origin||'self'}));
 	};
 	
 	useEffect(() => {

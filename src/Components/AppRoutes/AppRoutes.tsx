@@ -1,34 +1,25 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Footer from '../Footer/Footer';
 import styles from './AppRoutes.module.css';
-import Login from '../../Pages/Login/Login';
-import Register from '../../Pages/Register/Register';
-import Profile from '../../Pages/Profile/Profile';
-import PasswordRecover from '../../Pages/PasswordRecover/PasswordRecover';
 import AppNavbar from '../Navbar/AppNavbar';
 import NotFounded from '../../Pages/NotFounded/NotFounded';
-import UserActivation from '../../Pages/UserActivation/UserActivation';
-import UserActivationResend from '../../Pages/UserActivationResend/UserActivationResend';
-import PasswordRecoverSend from '../../Pages/PasswordRecoverSend/PasswordRecoverSend';
+import { AuthRoutes } from './AuthRoutes';
+import { NotLoggedOnlyRoutes } from './NotLoggedOnlyRoutes';
 
-function AppRoutes() {
+function AppRoutes() {	
 	return (
 		<BrowserRouter>
 			<AppNavbar/>
 			<div className={styles.routes}>
 				<Routes>
-					{/* need auth */}
-					<Route path='/' element={<Profile />}/> {/*  */}
+					{/*  free routes */}	
+					
+					{/* logged in only routes */}
+					{AuthRoutes()}
 
-					{/* dont need auth */}					
-					<Route path='/login' element={<Login />}/>
-					<Route path='/register' element={<Register />}/>					
-					
-					<Route path='/auth/password_recover' element={<PasswordRecover />}/>					
-					<Route path='/auth/password_recover_send' element={<PasswordRecoverSend />}/>					
-					
-					<Route path='/user/activation' element={<UserActivation />}/>
-					<Route path='/user/activation_resend' element={<UserActivationResend />}/>
+					{/* all RestrictedRoute are by default bloqued, must specify if can be acceced while logged in ou loggedout*/}
+					{/* can only be acceced if logged out */}
+					{NotLoggedOnlyRoutes()}
 					
 					<Route path='*' element={<NotFounded />}/>
 				</Routes>

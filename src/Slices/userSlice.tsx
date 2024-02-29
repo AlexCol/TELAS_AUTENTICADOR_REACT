@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IUserData } from "../Interfaces/IUserData";
 import { userService } from "../Services/userService";
 import { IRegisterData } from "../Interfaces/IRegisterData";
+import { encrypt } from "../Utils/Crypto";
 
 
 //!declarando interface do state
@@ -23,7 +24,8 @@ const initialState: IAuthSate = {
 export const register = createAsyncThunk(
   "user/register",
   async ({registerData, origin} : {registerData: IRegisterData, origin: string}, thunkAPI) => {
-    const data = await userService.register(registerData, origin);
+    const encryptedData = {data: encrypt(registerData)};
+		const data = await userService.register(encryptedData, origin);
 		
 		if (typeof data === 'object' && "errorMessage" in data) {
 			return thunkAPI.rejectWithValue(data.errorMessage);

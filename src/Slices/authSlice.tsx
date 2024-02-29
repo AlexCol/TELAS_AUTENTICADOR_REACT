@@ -1,38 +1,21 @@
-import Cookies from 'js-cookie';
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IAuthData } from "../Interfaces/IAuthData";
 import { authService } from "../Services/authService";
 import { encrypt } from '../Utils/Crypto';
-
+import {addTokens, removeTokens} from "../Hooks/useAuth";
 
 //!declarando interface do state
 export interface IAuthSate {
-	authTokens: IAuthData|null,
 	error: []
 	success: boolean,
 	loading: boolean	
 };
 
-//! buscando dados dos cookies, pra ver se já não tem cadastro
-function getLoggedInfo(): IAuthData|null {
-	const access = Cookies.get("accessToken");
-	const refresh = Cookies.get("refreshToken");
-	if (access && refresh) {
-		const data: IAuthData = {accessToken: access, refreshToken: refresh};
-		return data;
-	}
-	return null;
-}
-
-
 //! inicializando state inicial
 const initialState: IAuthSate = {
-	authTokens: getLoggedInfo(),
 	error: [],
 	success: false,
 	loading: false
 }
-
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -42,10 +25,25 @@ export const login = createAsyncThunk(
 
 		if (typeof data === 'object' && "errorMessage" in data) {
 			return thunkAPI.rejectWithValue(data.errorMessage);
-		}		
-		Cookies.set('accessToken', data.accessToken, {sameSite: 'Strict', secure: true});
-		Cookies.set('refreshToken', data.refreshToken, {sameSite: 'Strict', secure: true});
+		}
+		addTokens('accessToken', data.accessToken);
+		addTokens('refreshToken', data.refreshToken);
+    return data;
+  }
+);
 
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_:undefined, thunkAPI) => {
+    const accessToken = localStorage.getItem("accessToken") || '';
+		const data = await authService.logout(accessToken);
+
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}
+
+		removeTokens('accessToken');
+		removeTokens('refreshToken');
     return data;
   }
 );
@@ -109,65 +107,74 @@ export const authSlice = createSlice({
 			state.loading = false;
 			state.error = [];
 			state.success = true;
-			state.authTokens = getLoggedInfo();
 		})
 		.addCase(login.rejected, (state, action) => {
 			state.loading = false;
+			console.log(action.payload);
 			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
 			state.success = false;
-			state.authTokens = null;
+		})	
+		.addCase(logout.pending, (state) => {
+			state.loading = true;
+			state.error = [];
+			state.success = false;
+		})
+		.addCase(logout.fulfilled, (state) => {
+			state.loading = false;
+			state.error = [];
+			state.success = true;
+		})
+		.addCase(logout.rejected, (state, action) => {
+			state.loading = false;
+			console.log(action.payload);
+			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+			state.success = false;
 		})			
-			.addCase(activate.pending, (state) => {
-				state.loading = true;
-				state.error = [];
-				state.success = false;
-			})
-			.addCase(activate.fulfilled, (state) => {
-				state.loading = false;
-				state.error = [];
-				state.success = true;
-				state.authTokens = null;
-			})
-			.addCase(activate.rejected, (state, action) => {
-				state.loading = false;
-				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
-				state.success = false;
-				state.authTokens = null;
-			})
-			.addCase(resendActivation.pending, (state) => {
-				state.loading = true;
-				state.error = [];
-				state.success = false;
-			})
-			.addCase(resendActivation.fulfilled, (state) => {
-				state.loading = false;
-				state.error = [];
-				state.success = true;
-				state.authTokens = null;
-			})
-			.addCase(resendActivation.rejected, (state, action) => {
-				state.loading = false;
-				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
-				state.success = false;
-				state.authTokens = null;
-			})
-			.addCase(sendPasswordRecover.pending, (state) => {
-				state.loading = true;
-				state.error = [];
-				state.success = false;
-			})
-			.addCase(sendPasswordRecover.fulfilled, (state) => {
-				state.loading = false;
-				state.error = [];
-				state.success = true;
-				state.authTokens = null;
-			})
-			.addCase(sendPasswordRecover.rejected, (state, action) => {
-				state.loading = false;
-				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
-				state.success = false;
-				state.authTokens = null;
-			})	
+		.addCase(activate.pending, (state) => {
+			state.loading = true;
+			state.error = [];
+			state.success = false;
+		})
+		.addCase(activate.fulfilled, (state) => {
+			state.loading = false;
+			state.error = [];
+			state.success = true;
+		})
+		.addCase(activate.rejected, (state, action) => {
+			state.loading = false;
+			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+			state.success = false;
+		})
+		.addCase(resendActivation.pending, (state) => {
+			state.loading = true;
+			state.error = [];
+			state.success = false;
+		})
+		.addCase(resendActivation.fulfilled, (state) => {
+			state.loading = false;
+			state.error = [];
+			state.success = true;
+		})
+		.addCase(resendActivation.rejected, (state, action) => {
+			state.loading = false;
+			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+			state.success = false;
+		})
+		.addCase(sendPasswordRecover.pending, (state) => {
+			state.loading = true;
+			state.error = [];
+			state.success = false;
+		})
+		.addCase(sendPasswordRecover.fulfilled, (state) => {
+			state.loading = false;
+			state.error = [];
+			state.success = true;
+		})
+		.addCase(sendPasswordRecover.rejected, (state, action) => {
+			state.loading = false;
+			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+			state.success = false;
+		})
 	}
 });
 

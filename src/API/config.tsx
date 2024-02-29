@@ -10,7 +10,7 @@ export const api = axios.create({
 export async function apiRequests(method: string, url: string, data?: any, token?: string) {
 	let headers = {};
 	if (token) {
-		headers = {Authorization: `Beared ${token}`};
+		headers = {Authorization: `Bearer ${token}`};
 	}
 	const response = await api({
 		method,

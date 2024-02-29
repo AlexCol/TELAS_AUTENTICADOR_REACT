@@ -1,7 +1,15 @@
 import { apiRequests } from "../API/config";
 
+const checkAuth = async (token: string) => {
+	return apiRequests('get', `/auth`, null, token);
+};
+
 const login = async (data: string) => {
 	return apiRequests('post', `/auth/signin`, {data});
+};
+
+const logout = async (token:string) => {
+	return apiRequests('put', `/auth/revoke`, null, token);
 };
 
 const activate = async (token:string) => {
@@ -17,5 +25,5 @@ const sendPasswordRecover = async (email:string, origin: string) => {
 };
 
 export const authService = {
-	login, activate, resendActivation, sendPasswordRecover
+	login, logout, activate, resendActivation, sendPasswordRecover, checkAuth
 }
