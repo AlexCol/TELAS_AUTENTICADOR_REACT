@@ -20,6 +20,10 @@ const sendPasswordRecover = async (email:string, origin: string) => {
 	return apiRequests('put', `auth/recover_password?origin=${origin}`, {email});
 };
 
+const passwordRecover = async (data: string, token: string) => {
+	return apiRequests('put', `auth/newpassword?t=${token}`, {data});
+};
+
 export const authService = {
-	login, logout, activate, resendActivation, sendPasswordRecover
+	login, logout, activate, resendActivation, sendPasswordRecover, passwordRecover
 }

@@ -1,6 +1,6 @@
 
 import { useDispatch } from 'react-redux';
-import { useGetOriginFromQueryParams, useGetTokenFromQueryParams } from '../../Hooks/useGetOriginFromQueryParams';
+import { useGetOriginFromQueryParams, useGetTokenFromQueryParams } from '../../Hooks/useGetQueryParams';
 import styles from './UserActivation.module.css';
 import { AppDispatch, RootState } from '../../store';
 import { useSelector } from 'react-redux';
@@ -29,10 +29,6 @@ function UserActivation() {
 			setTimeout(() => {
 				navigate(`/login?o=${origin}`);
 			}, 3000);
-			
-			if (error.length > 0) {
-				alert(error.join(' '));
-			}
 		}
 	}, [success]);
 

@@ -1,5 +1,5 @@
 import styles from './Register.module.css';
-import { useGetOriginFromQueryParams } from '../../Hooks/useGetOriginFromQueryParams';
+import { useGetOriginFromQueryParams } from '../../Hooks/useGetQueryParams';
 import { FormEvent, MutableRefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Message from '../../Components/Message/Message';

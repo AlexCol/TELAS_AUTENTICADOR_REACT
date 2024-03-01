@@ -1,7 +1,7 @@
 import { ReactNode, useContext } from "react"
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
-import { useGetOriginFromQueryParams } from "../../Hooks/useGetOriginFromQueryParams";
+import { useGetOriginFromQueryParams } from "../../Hooks/useGetQueryParams";
 
 interface IRestrictedRouteProps {
     children: ReactNode,
@@ -12,7 +12,6 @@ interface IRestrictedRouteProps {
 export const RestrictedRoute = ({children, canAccessLoggeIn = false, canAccessLoggedOut = false}: IRestrictedRouteProps) => {
 	const auth = useContext(AuthContext);
 	const origin = useGetOriginFromQueryParams();
-	console.log(origin);
 	return (
 			<>
 			{auth

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { IAuthSate, login, reset } from '../../Slices/authSlice';
 import Message from '../../Components/Message/Message';
 import { Link } from 'react-router-dom';
-import { useGetOriginFromQueryParams } from '../../Hooks/useGetOriginFromQueryParams';
+import { useGetOriginFromQueryParams } from '../../Hooks/useGetQueryParams';
 import { decrypt, encrypt } from '../../Utils/Crypto';
 
 function Login() {
@@ -75,14 +75,10 @@ function Login() {
 					{error && error.map((errorMessage:string, index) => (
 							<Message key={index} msg={errorMessage} type='error'/>
 					))}
-				</div>
-				{error && error.join(" ").includes("Usuário inativo") ?
-					<p>Gostaria de solicitar um novo email de ativação?  <Link to={`/user/activation_resend?o=${origin}`}>Clique aqui.</Link></p>
-				:
-					<p>Esqueceu sua senha? <Link to={`/auth/password_recover_send?o=${origin}`}>Clique aqui.</Link></p>
-				}
+				</div>				
+				<p>Esqueceu sua senha? <Link to={`/auth/password_recover_send?o=${origin}`}>Clique aqui.</Link></p>
 				<p>Não possui cadastro? <Link to={`/register?o=${origin}`}>Clique aqui.</Link></p>
-				
+				<p>Novo email para ativar a conta? <Link to={`/user/activation_resend?o=${origin}`}>Clique aqui.</Link></p>
 			</form>
 		</div>
 	)

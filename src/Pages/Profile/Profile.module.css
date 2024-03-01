@@ -65,6 +65,17 @@
   background-color: darkblue;
 }
 
+.back_btn {
+  color: darkgoldenrod;
+  border: 1px solid darkgoldenrod;
+	padding: 0;
+	margin: 0;
+	width: 15%;
+}
+.back_btn:hover {
+  background-color: darkgoldenrod;
+}
+
 .delete_btn_modal {
   color: darkred;
   border: 1px solid darkred;

@@ -2,7 +2,7 @@ import styles from './PasswordRecoverSend.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { FormEvent, MutableRefObject, useEffect, useRef } from 'react';
-import { useGetOriginFromQueryParams } from '../../Hooks/useGetOriginFromQueryParams';
+import { useGetOriginFromQueryParams } from '../../Hooks/useGetQueryParams';
 import { IAuthSate, reset, sendPasswordRecover } from '../../Slices/authSlice';
 import Message from '../../Components/Message/Message';
 import { Link, useNavigate } from 'react-router-dom';
@@ -28,7 +28,7 @@ function PasswordRecoverSend() {
 		emailRef.current.value = '';
 		setTimeout(() => {			
 			dispatch(reset());
-			navigate('/login');
+			navigate(`/login?o=${origin}`);
 		}, 3000);
 	}
 
@@ -55,7 +55,7 @@ function PasswordRecoverSend() {
 					value={loading ? "Aguarde..." : "Enviar"}					
 				/>				
 
-				<p>Voltar ao <Link to={`/register?o=${origin}`}>Login</Link></p>
+				<p>Voltar ao <Link to={`/login?o=${origin}`}>Login</Link></p>
 			</form>
 
 			<div className={styles.messages}>

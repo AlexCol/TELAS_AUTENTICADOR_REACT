@@ -41,7 +41,7 @@ export const getProfile = createAsyncThunk(
   async (_:undefined, thunkAPI) => {
     const accessToken = localStorage.getItem("accessToken") || '';
 		const data = await userService.getProfile(accessToken);
-		
+
 		if (typeof data === 'object' && "errorMessage" in data) {
 			return thunkAPI.rejectWithValue(data.errorMessage);
 		}
@@ -117,6 +117,8 @@ const userSlice = createSlice({
 				state.loading = false;
 				state.error = [];
 				state.success = '';
+				console.log(action.payload);
+
 				state.user = JSON.parse(JSON.stringify(decrypt(action.payload)));
 			})
 			.addCase(getProfile.rejected, (state, action) => {

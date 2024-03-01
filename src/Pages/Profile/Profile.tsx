@@ -8,9 +8,12 @@ import Message from '../../Components/Message/Message';
 import { IUpdateData } from '../../Interfaces/IUpdateData';
 import { Modal } from 'react-bootstrap';
 import { logout } from '../../Slices/authSlice';
+import { useGetOriginFromQueryParams } from '../../Hooks/useGetQueryParams';
+import { decrypt, encrypt } from '../../Utils/Crypto';
 
 function Profile() {
 	const emailRef = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>; //!esse 'as' faz com que não precise validar se o current está ok ou não
+	const origin = useGetOriginFromQueryParams();
 	const firstNameRef = useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>;
 	const lastNameRef = useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>;
 	const passwordRef = useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>;
@@ -51,6 +54,15 @@ function Profile() {
 		dispatch(reset());
 	}
 
+	const handleGoBack = () => {
+		const storageToken = localStorage.getItem('accessToken');
+			if (storageToken) {
+				const decryptOrigin = decrypt(origin);			
+				const token = encrypt(localStorage.getItem('accessToken'));
+				window.location.href = (`${decryptOrigin}?t=${token}`);
+			}
+	}
+
 	useEffect(() => {
 		if(success) {
 			passwordRef.current.value = '';
@@ -83,6 +95,7 @@ function Profile() {
 			<div className={styles.btns_container}>
 				{user && <button className={styles.delete_btn} onClick={showModal}>{loading ? "Aguarde..." : "Deletar"}</button>}
 				{user && <button className={styles.logout_btn} onClick={handleLogout}>{loading ? "Aguarde..." : "Sair"}</button>}
+				{user && origin !== 'self' && <button className={styles.back_btn} onClick={handleGoBack}>{loading ? "Aguarde..." : "Voltar"}</button>}
 			</div>
 			<h2>Dados do usuário.</h2>
 			<p className={styles.subtitle}>Código de Identificação: </p>
@@ -147,7 +160,7 @@ function Profile() {
 			</>
 			)}
 
-<Modal className={styles.modal} show={showDeleteModal} onHide={closeModal}>
+			<Modal className={styles.modal} show={showDeleteModal} onHide={closeModal}>
         <Modal.Header>
           <Modal.Title className={styles.modal_header}>Deletar usuário.</Modal.Title>
         </Modal.Header>

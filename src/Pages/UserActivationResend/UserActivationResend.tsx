@@ -5,7 +5,8 @@ import { AppDispatch, RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { IAuthSate, resendActivation, reset } from '../../Slices/authSlice';
 import Message from '../../Components/Message/Message';
-import { useGetOriginFromQueryParams } from '../../Hooks/useGetOriginFromQueryParams';
+import { useGetOriginFromQueryParams } from '../../Hooks/useGetQueryParams';
+import { Link } from 'react-router-dom';
 
 function UserActivationResend() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -51,6 +52,7 @@ function UserActivationResend() {
 					disabled={loading}
 					value={loading ? "Aguarde..." : "Enviar"}					
 				/>				
+				<p>Voltar ao <Link to={`/login?o=${origin}`}>Login</Link></p>
 			</form>
 
 			<div className={styles.messages}>

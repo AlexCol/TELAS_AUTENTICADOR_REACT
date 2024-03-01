@@ -84,6 +84,20 @@ export const sendPasswordRecover = createAsyncThunk(
   }
 );
 
+export const passwordRecover = createAsyncThunk(
+  "auth/passwordRecover",
+  async ({password, confirmPassword, token}:{password: string, confirmPassword: string, token: string}, thunkAPI) => {
+    const encryptedData = encrypt({password, confirmPassword});
+		const data = await authService.passwordRecover(encryptedData, token);
+
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}
+
+    return data;
+  }
+);
+
 
 //!slicer
 export const authSlice = createSlice({
@@ -171,6 +185,21 @@ export const authSlice = createSlice({
 			state.success = true;
 		})
 		.addCase(sendPasswordRecover.rejected, (state, action) => {
+			state.loading = false;
+			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+			state.success = false;
+		})
+		.addCase(passwordRecover.pending, (state) => {
+			state.loading = true;
+			state.error = [];
+			state.success = false;
+		})
+		.addCase(passwordRecover.fulfilled, (state) => {
+			state.loading = false;
+			state.error = [];
+			state.success = true;
+		})
+		.addCase(passwordRecover.rejected, (state, action) => {
 			state.loading = false;
 			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
 			state.success = false;

@@ -8,5 +8,5 @@ export function useGetOriginFromQueryParams() {
 }
 export function useGetTokenFromQueryParams() {
 	const {search} = useLocation();	
-	return useMemo(() => new URLSearchParams(search).get("t"), [search]);
+	return useMemo(() => new URLSearchParams(search).get("t") || '', [search]);
 }
