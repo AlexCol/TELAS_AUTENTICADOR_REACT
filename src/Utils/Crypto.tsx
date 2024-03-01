@@ -1,8 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const keyValue = '';
-
-
+const keyValue = import.meta.env.VITE_CRYPTO_SECRET_KEY || '';
 const secretKey = CryptoJS.enc.Utf8.parse(keyValue);
 const iv = CryptoJS.enc.Utf8.parse(keyValue);
 
@@ -15,7 +13,6 @@ const criptoConfig = {
 
 export function encrypt(plainValue: any): string {	
 	const jsonData = JSON.stringify(plainValue);
-
 	if (!secretKey || !plainValue)
     throw Error("Chave secreta ou token inválido.");
 	

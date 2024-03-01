@@ -17,12 +17,11 @@ function UserActivation() {
 	const dispatch = useDispatch<AppDispatch>();
 	const {success, loading, error} = useSelector<RootState, IAuthSate>(state => state.auth);
 	
+	console.log(error);
+
+
 	useEffect(() => {		
-		async function ativateUser() {
-			await dispatch(activate(token || '_'));	
-			dispatch(reset());
-		}
-		ativateUser();
+		dispatch(activate(token || '_'));	
 	}, [dispatch, token]);
 
 	useEffect(() => {
@@ -30,8 +29,16 @@ function UserActivation() {
 			setTimeout(() => {
 				navigate(`/login?o=${origin}`);
 			}, 3000);
+			
+			if (error.length > 0) {
+				alert(error.join(' '));
+			}
 		}
 	}, [success]);
+
+	useEffect(() => {
+		dispatch(reset());
+	}, []);
 	
 	return (		
 		<div className={styles.activation}>

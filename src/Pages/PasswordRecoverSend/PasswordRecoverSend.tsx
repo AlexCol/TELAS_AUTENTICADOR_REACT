@@ -5,6 +5,7 @@ import { FormEvent, MutableRefObject, useEffect, useRef } from 'react';
 import { useGetOriginFromQueryParams } from '../../Hooks/useGetOriginFromQueryParams';
 import { IAuthSate, reset, sendPasswordRecover } from '../../Slices/authSlice';
 import Message from '../../Components/Message/Message';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 function PasswordRecoverSend() {
@@ -12,6 +13,7 @@ function PasswordRecoverSend() {
 	const emailRef = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>; //!esse 'as' faz com que não precise validar se o current está ok ou não
 	const origin = useGetOriginFromQueryParams();	
 	const {loading, error, success} = useSelector<RootState, IAuthSate>(state => state.auth);
+	const navigate = useNavigate();
 
 
 	async function handleSumit(e: FormEvent<HTMLFormElement>) {
@@ -25,7 +27,8 @@ function PasswordRecoverSend() {
 		
 		emailRef.current.value = '';
 		setTimeout(() => {			
-			dispatch(reset());	
+			dispatch(reset());
+			navigate('/login');
 		}, 3000);
 	}
 
@@ -51,6 +54,8 @@ function PasswordRecoverSend() {
 					disabled={loading}
 					value={loading ? "Aguarde..." : "Enviar"}					
 				/>				
+
+				<p>Voltar ao <Link to={`/register?o=${origin}`}>Login</Link></p>
 			</form>
 
 			<div className={styles.messages}>
@@ -59,6 +64,7 @@ function PasswordRecoverSend() {
 				))}
 				{success && <Message msg={'Email de recuperação enviado com sucesso.'} type='success'/>}
 			</div>
+			
 		</div>
 	)
 }

@@ -7,16 +7,15 @@ import { IAuthSate, login, reset } from '../../Slices/authSlice';
 import Message from '../../Components/Message/Message';
 import { Link } from 'react-router-dom';
 import { useGetOriginFromQueryParams } from '../../Hooks/useGetOriginFromQueryParams';
+import { decrypt, encrypt } from '../../Utils/Crypto';
 
 function Login() {
 	const dispatch = useDispatch<AppDispatch>();
 	const origin = useGetOriginFromQueryParams();
-	const {authTokens, loading, error} = useSelector<RootState, IAuthSate>(state => state.auth);
-
+	const {loading, error, success} = useSelector<RootState, IAuthSate>(state => state.auth);
+	
 	const emailRef = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>; //!esse 'as' faz com que não precise validar se o current está ok ou não
 	const passwordRef = useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>;
-	
-	
 	
 	function handleSumit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -31,12 +30,22 @@ function Login() {
 	}
 
 	useEffect(() => {
+		if(success && origin && origin !== 'self') {			
+			const storageToken = localStorage.getItem('accessToken');
+			if (storageToken) {
+				const decryptOrigin = decrypt(origin);			
+				const token = encrypt(localStorage.getItem('accessToken'));
+				window.location.href = (`${decryptOrigin}?t=${token}`);
+			}
+		}
+	}, [dispatch, success]);
+
+	useEffect(() => {
 		dispatch(reset());
-	}, [])
+	}, []);
 
 	return (		
 		<div className={styles.login}>
-			<p>{authTokens && authTokens.accessToken}</p>
 			<form onSubmit={handleSumit}>
 				<h1>Login</h1>
 				<input 
@@ -63,11 +72,17 @@ function Login() {
 					value={loading ? "Aguarde..." : "Entrar"}					
 				/>				
 				<div className={styles.messages}>
-					{error && error.map((errorMessage, index) => (
-						<Message key={index} msg={errorMessage} type='error'/>
+					{error && error.map((errorMessage:string, index) => (
+							<Message key={index} msg={errorMessage} type='error'/>
 					))}
 				</div>
-				<p>Esqueceu sua senha? <Link to={`/auth/password_recover_send?o=${origin}`}>Clique aqui.</Link></p>
+				{error && error.join(" ").includes("Usuário inativo") ?
+					<p>Gostaria de solicitar um novo email de ativação?  <Link to={`/user/activation_resend?o=${origin}`}>Clique aqui.</Link></p>
+				:
+					<p>Esqueceu sua senha? <Link to={`/auth/password_recover_send?o=${origin}`}>Clique aqui.</Link></p>
+				}
+				<p>Não possui cadastro? <Link to={`/register?o=${origin}`}>Clique aqui.</Link></p>
+				
 			</form>
 		</div>
 	)

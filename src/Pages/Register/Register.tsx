@@ -6,7 +6,7 @@ import Message from '../../Components/Message/Message';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { useSelector } from 'react-redux';
-import { IAuthSate, register, reset } from '../../Slices/userSlice';
+import { IUserSate, register, reset } from '../../Slices/userSlice';
 import { IRegisterData } from '../../Interfaces/IRegisterData';
 
 
@@ -19,7 +19,7 @@ function Register() {
 	const confirmPasswordRef = useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>;
 	const [pageError, setPageError] = useState<string>('');
 
-	const {success, loading, error} = useSelector<RootState, IAuthSate>(state => state.user);
+	const {success, loading, error} = useSelector<RootState, IUserSate>(state => state.user);
 	const dispatch = useDispatch<AppDispatch>();
 
 	
@@ -35,12 +35,16 @@ function Register() {
 			ConfirmPassword: confirmPasswordRef.current.value
 		}
 
-		dispatch(await register({registerData, origin: origin||'self'}));
+		await dispatch(register({registerData, origin: origin||'self'}));
+		
+		setTimeout(() => {
+			dispatch(reset());
+		}, 3000);
 	};
 	
 	useEffect(() => {
 		dispatch(reset());
-	}, [dispatch]);
+	}, []);
 
 	useMemo(() => {
 		if(success) {
@@ -118,7 +122,7 @@ function Register() {
 				{success && <Message msg={success} type='success'/>}
 			</div>			
 
-			<p>Já possui conta? <Link to='/login'>Clique aqui</Link> para logar.</p>			
+			<p>Já possui conta? <Link to={`/login?o=${origin || 'self'}`}>Clique aqui</Link> para logar.</p>			
 		</div>
 	)
 }

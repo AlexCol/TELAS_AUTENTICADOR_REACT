@@ -1,0 +1,81 @@
+.profile {
+	border: 1px solid white;
+  background-color: #000;
+  padding: 1.5em 2em;
+	border-radius: 5px;
+  width: 33%;
+	max-width: 33%;
+  margin: 2em auto;
+}
+
+.profile h2 {
+  text-align: center;
+  font-size: 2.1em;
+  margin-top: 0;
+}
+
+.profile p {
+  text-align: center;
+}
+
+.profile form {
+  display: flex;
+	flex-direction: column;	
+	width: 100%;	
+  margin-bottom: 1.5em;
+}
+
+.subtitle {
+  font-weight: bold;
+  color: white;
+  margin-bottom: 0;
+}
+
+.userId {
+	
+	font-weight: bold;
+  color: white;
+  margin-bottom: 1.5em;
+}
+
+.btns_container {
+	display: flex;
+	justify-content: right;
+}
+
+.delete_btn {
+  color: darkred;
+  border: 1px solid darkred;
+	padding: 0;
+	margin: 0;
+	width: 15%;
+}
+.delete_btn:hover {
+  background-color: darkred;
+}
+
+.logout_btn {
+  color: darkblue;
+  border: 1px solid darkblue;
+	padding: 0;
+	margin: 0;
+	width: 15%;
+}
+.logout_btn:hover {
+  background-color: darkblue;
+}
+
+.delete_btn_modal {
+  color: darkred;
+  border: 1px solid darkred;
+}
+.delete_btn_modal:hover {
+  background-color: darkred;
+}
+
+.modal {
+	color: black;
+}
+.modal_header {
+	color: red;
+}

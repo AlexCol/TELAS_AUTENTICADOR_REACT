@@ -2,11 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IUserData } from "../Interfaces/IUserData";
 import { userService } from "../Services/userService";
 import { IRegisterData } from "../Interfaces/IRegisterData";
-import { encrypt } from "../Utils/Crypto";
+import { decrypt, encrypt } from "../Utils/Crypto";
+import { IUpdateData } from "../Interfaces/IUpdateData";
+import { removeTokens } from "../Hooks/useAuth";
 
 
 //!declarando interface do state
-export interface IAuthSate {
+export interface IUserSate {
 	user: IUserData|null,
 	error: []
 	success: string,
@@ -14,7 +16,7 @@ export interface IAuthSate {
 };
 
 //! inicializando state inicial
-const initialState: IAuthSate = {
+const initialState: IUserSate = {
 	user: null,
 	error: [],
 	success: '',
@@ -30,6 +32,48 @@ export const register = createAsyncThunk(
 		if (typeof data === 'object' && "errorMessage" in data) {
 			return thunkAPI.rejectWithValue(data.errorMessage);
 		}
+    return data;
+  }
+);
+
+export const getProfile = createAsyncThunk(
+  "user/getprofile",
+  async (_:undefined, thunkAPI) => {
+    const accessToken = localStorage.getItem("accessToken") || '';
+		const data = await userService.getProfile(accessToken);
+		
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}
+    return data;
+  }
+);
+
+export const updateProfile = createAsyncThunk(
+  "user/updateprofile",
+  async (updateData:IUpdateData, thunkAPI) => {
+    const accessToken = localStorage.getItem("accessToken") || '';
+		const cryptedData = {data: encrypt(updateData)};
+		const data = await userService.updateProfile(accessToken, cryptedData);
+		
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}
+    return data;
+  }
+);
+
+export const deleteProfile = createAsyncThunk(
+  "user/updateprofile",
+  async (_:undefined, thunkAPI) => {
+    const accessToken = localStorage.getItem("accessToken") || '';
+		const data = await userService.deleteProfile(accessToken);
+		
+		if (typeof data === 'object' && "errorMessage" in data) {
+			return thunkAPI.rejectWithValue(data.errorMessage);
+		}
+		removeTokens('accessToken');
+		removeTokens('refreshToken');
     return data;
   }
 );
@@ -63,6 +107,39 @@ const userSlice = createSlice({
 				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
 				state.success = '';
 				state.user = null;
+			})
+			.addCase(getProfile.pending, (state) => {
+				state.loading = true;
+				state.error = [];
+				state.success = '';
+			})
+			.addCase(getProfile.fulfilled, (state, action) => {
+				state.loading = false;
+				state.error = [];
+				state.success = '';
+				state.user = JSON.parse(JSON.stringify(decrypt(action.payload)));
+			})
+			.addCase(getProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+				state.success = '';
+				state.user = null;
+			})
+			.addCase(updateProfile.pending, (state) => {
+				state.loading = true;
+				state.error = [];
+				state.success = '';
+			})
+			.addCase(updateProfile.fulfilled, (state, action) => {
+				state.loading = false;
+				state.error = [];
+				state.success = 'Dados atualizados com sucesso!';
+				state.user = JSON.parse(JSON.stringify(decrypt(action.payload)));
+			})
+			.addCase(updateProfile.rejected, (state, action) => {
+				state.loading = false;
+				state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
+				state.success = '';
 			})
 	}
 });

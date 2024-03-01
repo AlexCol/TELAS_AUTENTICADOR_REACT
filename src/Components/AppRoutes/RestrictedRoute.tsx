@@ -1,6 +1,7 @@
 import { ReactNode, useContext } from "react"
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
+import { useGetOriginFromQueryParams } from "../../Hooks/useGetOriginFromQueryParams";
 
 interface IRestrictedRouteProps {
     children: ReactNode,
@@ -10,14 +11,15 @@ interface IRestrictedRouteProps {
 
 export const RestrictedRoute = ({children, canAccessLoggeIn = false, canAccessLoggedOut = false}: IRestrictedRouteProps) => {
 	const auth = useContext(AuthContext);
-	console.log(auth);
+	const origin = useGetOriginFromQueryParams();
+	console.log(origin);
 	return (
 			<>
 			{auth
 					?
-					canAccessLoggeIn ? children : <Navigate to="/"/>
+					canAccessLoggeIn ? children : <Navigate to={`/?o=${origin}`}/>
 					:
-					canAccessLoggedOut ? children : <Navigate to="/login"/>
+					canAccessLoggedOut ? children : <Navigate to={`/login?o=${origin}`}/>
 			}
 			</>
 	)

@@ -1,4 +1,4 @@
-import styles from './PasswordRecover.module.css';
+//import styles from './PasswordRecover.module.css';
 
 function PasswordRecover() {
 	return (

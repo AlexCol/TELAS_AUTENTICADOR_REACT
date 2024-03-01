@@ -1,9 +1,5 @@
 import { apiRequests } from "../API/config";
 
-const checkAuth = async (token: string) => {
-	return apiRequests('get', `/auth`, null, token);
-};
-
 const login = async (data: string) => {
 	return apiRequests('post', `/auth/signin`, {data});
 };
@@ -25,5 +21,5 @@ const sendPasswordRecover = async (email:string, origin: string) => {
 };
 
 export const authService = {
-	login, logout, activate, resendActivation, sendPasswordRecover, checkAuth
+	login, logout, activate, resendActivation, sendPasswordRecover
 }

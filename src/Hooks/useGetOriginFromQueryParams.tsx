@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 export function useGetOriginFromQueryParams() {
 	const {search} = useLocation();	
-	return useMemo(() => new URLSearchParams(search).get("o"), [search]);
+	return useMemo(() => new URLSearchParams(search).get("o") || 'self', [search]);
 }
 export function useGetTokenFromQueryParams() {
 	const {search} = useLocation();	

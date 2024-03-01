@@ -5,6 +5,7 @@ import AppNavbar from '../Navbar/AppNavbar';
 import NotFounded from '../../Pages/NotFounded/NotFounded';
 import { AuthRoutes } from './AuthRoutes';
 import { NotLoggedOnlyRoutes } from './NotLoggedOnlyRoutes';
+import { FreeRoutes } from './FreeRoutes';
 
 function AppRoutes() {	
 	return (
@@ -13,6 +14,7 @@ function AppRoutes() {
 			<div className={styles.routes}>
 				<Routes>
 					{/*  free routes */}	
+					{FreeRoutes()}
 					
 					{/* logged in only routes */}
 					{AuthRoutes()}
