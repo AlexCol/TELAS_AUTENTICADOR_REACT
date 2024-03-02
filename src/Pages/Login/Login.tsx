@@ -16,7 +16,7 @@ function Login() {
 	
 	const emailRef = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>; //!esse 'as' faz com que não precise validar se o current está ok ou não
 	const passwordRef = useRef<HTMLInputElement>(null) as MutableRefObject<HTMLInputElement>;
-	
+
 	function handleSumit(e: FormEvent<HTMLFormElement>) {
 		e.preventDefault();
 
@@ -26,7 +26,6 @@ function Login() {
 		}
 
 		dispatch(login(loginREquest));
-		dispatch(reset());
 	}
 
 	useEffect(() => {

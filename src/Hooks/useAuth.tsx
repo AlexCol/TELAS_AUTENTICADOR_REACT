@@ -45,7 +45,7 @@ export const useAuth = () => {
 			setAuth(true);
 		} catch {
 			//! Se ocorrer um erro na requisição, define autenticação como false e apaga qualquer resquicio do token
-			removeTokens('accessToken');
+			localStorage.removeItem('accessToken');
 			setAuth(false);
 		};
 		//! Finaliza o carregamento
