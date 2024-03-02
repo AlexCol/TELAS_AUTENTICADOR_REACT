@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  projectshub:
+    image: react_autenticador
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - 3011:8011
+    environment: 
+      TZ: America/Sao_Paulo

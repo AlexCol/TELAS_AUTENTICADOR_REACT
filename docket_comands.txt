@@ -1,0 +1,7 @@
+//para criar e atualizar
+docker-compose up -d --build
+--lembrar que precisa colocar no vite config
+	preview: {
+		host: true,
+		port: {porta do docker}
+	}

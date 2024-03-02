@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  projectshub:
+    image: projectshub
+    build:
+      context: .
+      dockerfile: ./Dockerfile
