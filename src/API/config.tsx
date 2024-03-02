@@ -2,8 +2,9 @@ import axios from "axios";
 
 //! variables
 export const authCookieName = 'authUser';
+export const autenticadorBaseUrl = 'https://localhost:7119'
 export const api = axios.create({
-	baseURL: "https://localhost:7119"
+	baseURL: autenticadorBaseUrl
 });
 
 //! functions

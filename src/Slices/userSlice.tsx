@@ -73,7 +73,6 @@ export const deleteProfile = createAsyncThunk(
 			return thunkAPI.rejectWithValue(data.errorMessage);
 		}
 		removeTokens('accessToken');
-		removeTokens('refreshToken');
     return data;
   }
 );
@@ -117,8 +116,6 @@ const userSlice = createSlice({
 				state.loading = false;
 				state.error = [];
 				state.success = '';
-				console.log(action.payload);
-
 				state.user = JSON.parse(JSON.stringify(decrypt(action.payload)));
 			})
 			.addCase(getProfile.rejected, (state, action) => {

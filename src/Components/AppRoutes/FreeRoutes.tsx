@@ -3,6 +3,7 @@ import UserActivationResend from "../../Pages/UserActivationResend/UserActivatio
 import UserActivation from "../../Pages/UserActivation/UserActivation";
 import PasswordRecover from "../../Pages/PasswordRecover/PasswordRecover";
 import PasswordRecoverSend from "../../Pages/PasswordRecoverSend/PasswordRecoverSend";
+import About from "../../Pages/About/About";
 
 
 export const FreeRoutes = () => {
@@ -14,6 +15,8 @@ export const FreeRoutes = () => {
 
 				<Route path='/auth/password_recover' element={<PasswordRecover />}/>
 				<Route path='/auth/password_recover_send' element={<PasswordRecoverSend />}/>
+
+				<Route path='/about' element={<About />}/>
 				
     </>
 	);

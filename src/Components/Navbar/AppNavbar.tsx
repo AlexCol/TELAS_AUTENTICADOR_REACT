@@ -1,11 +1,10 @@
 import styles from './AppNavbar.module.css';
 import { useMouseCenterEvent } from '../../Hooks/useMouseCenterEvent';
-import { AuthContext } from '../../Context/AuthContext';
-import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { FiAlertCircle } from 'react-icons/fi';
 
 
 function AppNavbar() {
-	const auth = useContext(AuthContext);	
 	const isRight = useMouseCenterEvent();
 	
 	return (
@@ -17,27 +16,12 @@ function AppNavbar() {
 			<img className={`${styles.nav_image} ${(isRight ? styles.image_turn : '')}`} src='/Security Guard.ico'/>			
 			
 			<ul className={styles.nav_links}>
-				{/*quando tiver validação de autenticação, esses caminhos devem ficar ocultos se não autenticado*/}
+				{/* optador por não ter links para as demais paginas, por precisar usar o 'origin', e pelo navbar, não rola */}
+				<Link to='/about'>
+					<FiAlertCircle />
+				</Link>
 				
-				{auth ? (
-					<>
-						{/* <li>
-							<NavLink to="/"><RiHomeGearLine /></NavLink>
-						</li>
-						<li>
-							<span onClick={handleLogout}>Sair</span>
-						</li> */}
-					</>
-				) : (				
-					<>
-						{/* <li>
-							<NavLink to="/register"><GiArchiveRegister /></NavLink>
-						</li>
-						<li>
-							<NavLink to="/login"><GiDoor /></NavLink>
-						</li>						 */}
-					</>
-				)}
+
 			</ul>
 		</nav>
 

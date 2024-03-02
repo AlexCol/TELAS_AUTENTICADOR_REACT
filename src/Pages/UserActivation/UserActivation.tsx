@@ -16,12 +16,10 @@ function UserActivation() {
 	
 	const dispatch = useDispatch<AppDispatch>();
 	const {success, loading, error} = useSelector<RootState, IAuthSate>(state => state.auth);
-	
-	console.log(error);
-
 
 	useEffect(() => {		
-		dispatch(activate(token || '_'));	
+		if(!success)
+			dispatch(activate(token || '_'));	
 	}, [dispatch, token]);
 
 	useEffect(() => {

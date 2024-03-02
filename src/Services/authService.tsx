@@ -4,10 +4,6 @@ const login = async (data: string) => {
 	return apiRequests('post', `/auth/signin`, {data});
 };
 
-const logout = async (token:string) => {
-	return apiRequests('put', `/auth/revoke`, null, token);
-};
-
 const activate = async (token:string) => {
 	return apiRequests('put', `/auth/activate?t=${token}`);
 };
@@ -25,5 +21,5 @@ const passwordRecover = async (data: string, token: string) => {
 };
 
 export const authService = {
-	login, logout, activate, resendActivation, sendPasswordRecover, passwordRecover
+	login, activate, resendActivation, sendPasswordRecover, passwordRecover
 }

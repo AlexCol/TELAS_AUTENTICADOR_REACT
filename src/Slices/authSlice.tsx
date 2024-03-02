@@ -27,24 +27,15 @@ export const login = createAsyncThunk(
 			return thunkAPI.rejectWithValue(data.errorMessage);
 		}
 		addTokens('accessToken', data.accessToken);
-		addTokens('refreshToken', data.refreshToken);
     return data;
   }
 );
 
 export const logout = createAsyncThunk(
   "auth/logout",
-  async (_:undefined, thunkAPI) => {
-    const accessToken = localStorage.getItem("accessToken") || '';
-		const data = await authService.logout(accessToken);
-
-		if (typeof data === 'object' && "errorMessage" in data) {
-			return thunkAPI.rejectWithValue(data.errorMessage);
-		}
-
+  async (_:undefined) => {
 		removeTokens('accessToken');
-		removeTokens('refreshToken');
-    return data;
+    return null;
   }
 );
 
@@ -137,13 +128,7 @@ export const authSlice = createSlice({
 			state.loading = false;
 			state.error = [];
 			state.success = true;
-		})
-		.addCase(logout.rejected, (state, action) => {
-			state.loading = false;
-			console.log(action.payload);
-			state.error = JSON.parse(JSON.stringify(action.payload)).errorMessage;
-			state.success = false;
-		})			
+		})		
 		.addCase(activate.pending, (state) => {
 			state.loading = true;
 			state.error = [];

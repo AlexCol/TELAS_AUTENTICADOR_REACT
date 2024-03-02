@@ -44,7 +44,8 @@ export const useAuth = () => {
 			//! Se a requisição for bem-sucedida, define autenticação como true
 			setAuth(true);
 		} catch {
-			//! Se ocorrer um erro na requisição, define autenticação como false
+			//! Se ocorrer um erro na requisição, define autenticação como false e apaga qualquer resquicio do token
+			removeTokens('accessToken');
 			setAuth(false);
 		};
 		//! Finaliza o carregamento
