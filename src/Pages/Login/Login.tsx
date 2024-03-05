@@ -7,7 +7,7 @@ import { IAuthSate, login, reset } from '../../Slices/authSlice';
 import Message from '../../Components/Message/Message';
 import { Link } from 'react-router-dom';
 import { useGetOriginFromQueryParams } from '../../Hooks/useGetQueryParams';
-import { decrypt, encrypt } from '../../Utils/Crypto';
+import { decrypt } from '../../Utils/Crypto';
 
 function Login() {
 	const dispatch = useDispatch<AppDispatch>();
@@ -33,7 +33,7 @@ function Login() {
 			const storageToken = localStorage.getItem('accessToken');
 			if (storageToken) {
 				const decryptOrigin = decrypt(origin);			
-				const token = encrypt(localStorage.getItem('accessToken'));
+				const token = localStorage.getItem('accessToken');
 				window.location.href = (`${decryptOrigin}?t=${token}`);
 			}
 		}

@@ -9,7 +9,7 @@ import { IUpdateData } from '../../Interfaces/IUpdateData';
 import { Modal } from 'react-bootstrap';
 import { logout } from '../../Slices/authSlice';
 import { useGetOriginFromQueryParams } from '../../Hooks/useGetQueryParams';
-import { decrypt, encrypt } from '../../Utils/Crypto';
+import { decrypt } from '../../Utils/Crypto';
 
 function Profile() {
 	const emailRef = useRef<HTMLInputElement>() as MutableRefObject<HTMLInputElement>; //!esse 'as' faz com que não precise validar se o current está ok ou não
@@ -58,7 +58,7 @@ function Profile() {
 		const storageToken = localStorage.getItem('accessToken');
 			if (storageToken) {
 				const decryptOrigin = decrypt(origin);			
-				const token = encrypt(localStorage.getItem('accessToken'));
+				const token = localStorage.getItem('accessToken');
 				window.location.href = (`${decryptOrigin}?t=${token}`);
 			}
 	}
