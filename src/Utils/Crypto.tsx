@@ -17,14 +17,16 @@ export function encrypt(plainValue: any): string {
     throw Error("Chave secreta ou token inválido.");
 	
 	const encryptedValue = CryptoJS.AES.encrypt(jsonData, secretKey, criptoConfig).toString();
-  return encryptedValue;
+	const UrlSafingValue = encryptedValue.replace('+', '-').replace('/', '_');
+  return UrlSafingValue;
 }
 
-export function decrypt(encryptedValue: string|null): string {
-  if (!secretKey || !encryptedValue)
+export function decrypt(encryptedValue: string|null): string {  
+	if (!secretKey || !encryptedValue)
     throw Error("Chave secreta ou token inválido.");
 
-  const bytes = CryptoJS.AES.decrypt(encryptedValue, secretKey, criptoConfig);
+	const UrlUnsafingValue = encryptedValue.replace('-', '+').replace('_', '/');
+  const bytes = CryptoJS.AES.decrypt(UrlUnsafingValue, secretKey, criptoConfig);
   const decryptedValue = bytes.toString(CryptoJS.enc.Utf8);
 	const decryptedObject = JSON.parse(decryptedValue);
   return decryptedObject;
