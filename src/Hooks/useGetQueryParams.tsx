@@ -10,3 +10,7 @@ export function useGetTokenFromQueryParams() {
 	const {search} = useLocation();	
 	return useMemo(() => new URLSearchParams(search).get("t") || '', [search]);
 }
+export function useGetItemFromQueryParams(par:string) {
+	const {search} = useLocation();	
+	return useMemo(() => new URLSearchParams(search).get(par) || '', [search]);
+}
