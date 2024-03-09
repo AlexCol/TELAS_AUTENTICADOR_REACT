@@ -2,7 +2,8 @@ import axios from "axios";
 
 //! variables
 export const authCookieName = 'authUser';
-export const autenticadorBaseUrl = 'http://localhost:5085'
+//export const autenticadorBaseUrl = 'http://localhost:5085'
+export const autenticadorBaseUrl = 'https://autenticador.onrender.com'
 export const api = axios.create({
 	baseURL: autenticadorBaseUrl
 });
