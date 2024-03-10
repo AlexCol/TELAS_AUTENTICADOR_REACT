@@ -48,7 +48,7 @@
   border: 1px solid darkred;
 	padding: 0;
 	margin: 0;
-	width: 15%;
+	width: 20%;
 }
 .delete_btn:hover {
   background-color: darkred;
@@ -59,7 +59,7 @@
   border: 1px solid darkblue;
 	padding: 0;
 	margin: 0;
-	width: 15%;
+	width: 20%;
 }
 .logout_btn:hover {
   background-color: darkblue;
@@ -70,7 +70,7 @@
   border: 1px solid darkgoldenrod;
 	padding: 0;
 	margin: 0;
-	width: 15%;
+	width: 20%;
 }
 .back_btn:hover {
   background-color: darkgoldenrod;
@@ -89,4 +89,22 @@
 }
 .modal_header {
 	color: red;
+}
+
+@media screen and (max-width: 600px) {
+  .profile {
+    width: 80%;
+		max-width: 80%;
+  }
+
+	.profile h2 {
+		font-size: 1.6em;
+	}
+	.profile p {
+		font-size: 0.8em;
+	}
+
+	.delete_btn, .logout_btn, .back_btn {
+		width: 25%;
+	}
 }

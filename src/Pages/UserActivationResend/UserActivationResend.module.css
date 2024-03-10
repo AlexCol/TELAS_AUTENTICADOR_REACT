@@ -23,3 +23,10 @@
 	padding-bottom: 1em;
 	min-height: 50px;
 }
+
+@media screen and (max-width: 600px) {
+  .sendMail {
+    width: 80%;
+		max-width: 80%;
+  }
+}
