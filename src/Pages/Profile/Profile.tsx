@@ -42,9 +42,9 @@ function Profile() {
 		dispatch(deleteProfile());
 	}
 
-	const showModal = () => {
-		setShowDeleteModal(true);
-	}
+	// const showModal = () => {
+	// 	setShowDeleteModal(true);
+	// }
 	const closeModal = () => {
 		setShowDeleteModal(false);
 	}
@@ -90,10 +90,12 @@ function Profile() {
 		dispatch(reset());
 	}, []);
 
+	if(!user) return <p>Aguarde...</p>
+
 	return (
 		<div className={styles.profile}>
 			<div className={styles.btns_container}>
-				{user && <button className={styles.delete_btn} onClick={showModal}>{loading ? "Aguarde..." : "Deletar"}</button>}
+				{/*user && <button className={styles.delete_btn} onClick={showModal}>{loading ? "Aguarde..." : "Deletar"}</button>*/}
 				{user && <button className={styles.logout_btn} onClick={handleLogout}>{loading ? "Aguarde..." : "Sair"}</button>}
 				{user && origin !== 'self' && <button className={styles.back_btn} onClick={handleGoBack}>{loading ? "Aguarde..." : "Voltar"}</button>}
 			</div>
